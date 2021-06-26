@@ -31,7 +31,7 @@ toggleModel(){
 
 handleSubmit(values){
     this.toggleModel();
-    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+    this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
 }
 
     render(){
@@ -143,36 +143,37 @@ function RenderDish({dish}) {
         }
     }
 
-    function RenderComments({comments, addComment, dishId}) {
-        if (comments == null) {
-            return (<div></div>)
-        }
-        const cmnts = comments.map(comment => {
+    function RenderComments({comments, postComment, dishId}) {
+        if (comments != null) {
             return (
-                <li key={comment.id}>
-                    <p>{comment.comment}</p>
-                    <p>-- {comment.author},
-                    &nbsp;
-                    {new Intl.DateTimeFormat('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: '2-digit'
-                    }).format(new Date(Date.parse(comment.date)))}
-                    </p>
-                </li>
+                         <div className='col-12 col-md-5 m-1'>
+                                <h4> Comments </h4>
+                                <ul className='list-unstyled'>
+                                  { comments.map(comment => {
+                                     return (
+                                            <li key={comment.id}>
+                                                <p>{comment.comment}</p>
+                                                <p>-- {comment.author},
+                                                &nbsp;
+                                                {new Intl.DateTimeFormat('en-US', {
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: '2-digit'
+                                                }).format(new Date(Date.parse(comment.date)))}
+                                                </p>
+                                            </li>
+                                              );
+                                        })}
+                                </ul>
+                             <CommentForm dishId={dishId} postComment={postComment} />
+                          </div>
+             
             )
-        })
-        return (
             
-            <div className='col-12 col-md-5 m-1'>
-                <h4> Comments </h4>
-                <ul className='list-unstyled'>
-                    {cmnts}
-                    <CommentForm dishId={dishId} addComment={addComment} />
-                </ul>
-            </div>
-         
-        )
+        } else
+        return (<div></div>);
+        
+    
     }
 
 const DishDetail = (props)=> {
@@ -211,10 +212,8 @@ const DishDetail = (props)=> {
                 </div>
                 <div className="row">
                         <RenderDish dish={props.dish} />
-                        <RenderComments comments={props.comments}
-                            addComment={props.addComment}
-                            dishId={props.dish.id}
-                        />
+                        <RenderComments comments={props.comments} postComment={props.postComment} dishId={props.dish.id} />
+
                 </div>
                 </div>
             );
