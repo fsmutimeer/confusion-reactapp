@@ -62,9 +62,7 @@ const mapDispatchToProps = dispatch => ({
 
 
 class Main extends Component {
-  constructor(props){
-    super(props);  
-  }
+ 
   componentDidMount(){
 
     this.props.fetchDishes();
@@ -121,7 +119,7 @@ const DishWithId = ({match}) => {
         <Route path='/menu/:dishId' component={DishWithId} />
         <Route exact path='/contactus' component={() => <ContactComponent resetFeedbackForm={this.props.resetFeedbackForm} postFeedback={this.props.postFeedback} />} />
         <Route exact path='/aboutus' component={()=><About 
-                                                          leaders={this.props.leaders}
+                                                        
                                                           leaders={this.props.leaders.leaders}
                                                           leaderLoading={this.props.leaders.isLoading}
                                                           leaderErrMess={this.props.leaders.errMess}/>} />
